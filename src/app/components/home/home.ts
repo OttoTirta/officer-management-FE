@@ -48,8 +48,9 @@ export class Home {
   isSortByDesc: boolean = false;
 
   pageSizeForm: FormControl = new FormControl(25);
-  groupForm: FormControl = new FormControl('');
   nameForm: FormControl = new FormControl();
+  branchForm: FormControl = new FormControl();
+  positionForm: FormControl = new FormControl();
 
   pageIndex: number = 1;
   totalPages: number = 0;
@@ -71,10 +72,21 @@ export class Home {
     this.pageSizeForm.valueChanges.subscribe(x => {
       this.getEmployee();
     });
-    this.groupForm.valueChanges.subscribe(x => {
+    this.nameForm.valueChanges
+    .pipe(
+      debounceTime(500)
+    )
+    .subscribe(x => {
       this.getEmployee();
     });
-    this.nameForm.valueChanges
+    this.branchForm.valueChanges
+    .pipe(
+      debounceTime(500)
+    )
+    .subscribe(x => {
+      this.getEmployee();
+    });
+    this.positionForm.valueChanges
     .pipe(
       debounceTime(500)
     )
@@ -93,15 +105,6 @@ export class Home {
 
 
   getEmployee(){
-    var filterData: EmployeeListFilter = {
-      employeeName: this.nameForm.value,
-      group: this.groupForm.value,
-      pageIndex: this.pageIndex,
-      pageSize: this.pageSizeForm.value,
-      sortColumn: this.sortingColumn,
-      isSortByDesc: this.isSortByDesc
-    };
-
     var payload = {
       PageSize: this.pageSizeForm.value,
       PageIndex: this.pageIndex,
@@ -111,6 +114,14 @@ export class Home {
         {
           KeyName: 'FullName',
           Value: this.nameForm.value ?? ''
+        },
+        {
+          KeyName: 'BranchName',
+          Value: this.branchForm.value ?? ''
+        },
+        {
+          KeyName: 'PositionName',
+          Value: this.branchForm.value ?? ''
         },
       ]
     };

@@ -1,19 +1,19 @@
 <div class="p-4 sm:p-6 lg:p-8 bg-gray-900 min-h-screen">
   <!-- Page Info -->
   <div class="flex justify-between mb-6">
-    <h1 class="text-2xl sm:text-3xl font-bold text-gray-100">Employee List</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-100">Branch List</h1>
 
     <button
       class="font-semibold text-gray-100 p-2 rounded-lg transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none cursor-pointer bg-green-500 hover:bg-green-700"
-      (click)="openEmployeeForm('Add')"
+      (click)="openBranchForm('Add')"
     >
-      Add New Employee
+      Add New Branch
     </button>
   </div>
 
   <!-- Filter -->
   <div class="mb-4 p-4 bg-gray-800 rounded-lg shadow-md">
-    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 items-end">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 items-end">
       <div>
         <label for="nameFilter" class="block text-sm font-medium text-gray-300"
           >Filter by Name</label
@@ -35,22 +35,9 @@
           id="nameFilter"
           placeholder="Search by branch..."
           class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-sm shadow-sm placeholder-gray-400 text-gray-200 focus:outline-none focus:ring-sky-500 focus:border-sky-500"
-          [formControl]="branchForm"
+          [formControl]="nameForm"
         />
       </div>
-      <div>
-        <label for="nameFilter" class="block text-sm font-medium text-gray-300"
-          >Filter by Position</label
-        >
-        <input
-          type="text"
-          id="nameFilter"
-          placeholder="Search by position..."
-          class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-sm shadow-sm placeholder-gray-400 text-gray-200 focus:outline-none focus:ring-sky-500 focus:border-sky-500"
-          [formControl]="positionForm"
-        />
-      </div>
-
       <div>
         <label for="getPageSize()" class="block text-sm font-medium text-gray-300"
           >Items per Page</label
@@ -106,43 +93,23 @@
         </thead>
         <!-- Table Body -->
         <tbody class="bg-gray-800 divide-y divide-gray-700">
-          @for (employee of employees; track $index) {
+          @for (branch of branchs; track $index) {
           <tr class="hover:bg-gray-700/50 transition-colors duration-200">
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-100">
-                {{ employee.FullName }}
+                {{ branch.BranchName }}
               </div>
             </td>
 
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-200">{{ employee.BranchName }}</div>
-            </td>
-
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-200">{{ employee.PositionName }}</div>
-            </td>
-
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-200">{{ employee.ContractMonthRemaining }} Month</div>
+              <div class="text-sm text-gray-200">{{ branch.BranchCode }}</div>
             </td>
 
             <td
               class="flex justify-end gap-2 px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
             >
               <button
-                (click)="openDetailForm(employee)"
-                class="font-semibold text-gray-100 p-2 rounded-lg transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none cursor-pointer bg-sky-500 hover:bg-sky-700"
-              >
-                Detail
-              </button>
-              <button
-                (click)="editEmployee(employee)"
-                class="font-semibold text-gray-100 p-2 rounded-lg transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none cursor-pointer bg-yellow-500 hover:bg-yellow-700"
-              >
-                Edit
-              </button>
-              <button
-                (click)="deleteEmployee(employee.username)"
+                (click)="deleteBranch(branch.username)"
                 class="font-semibold text-gray-100 p-2 rounded-lg transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none cursor-pointer bg-red-500 hover:bg-red-700"
               >
                 Delete
@@ -189,18 +156,18 @@
     </div>
   </div>
 </div>
-@if (isOpenEmployeeForm) {
+<!-- @if (isOpenBranchForm) {
 <app-create-edit-form
-  [isOpen]="isOpenEmployeeForm"
+  [isOpen]="isOpenBranchForm"
   [isCreate]="isCreateForm"
-  [employeeData]="selectedEmployee"
+  [branchData]="selectedBranch"
   [availableGroups]="[]"
-  (close)="closeEmployeeForm()"
+  (close)="closeBranchForm()"
 />
 }
 
 <app-detail-form
   [isOpen]="isOpenDetail"
-  [employee]="selectedEmployee"
+  [branch]="selectedBranch"
   (close)="closeDetailForm()"
-/>
+/> -->

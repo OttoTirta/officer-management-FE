@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Home } from './components/home/home';
 import { Login } from './components/login/login';
 import { authGuard, noAuthGuard } from './auth.guard';
+import { Branch } from './components/branch/branch';
 
 export const routes: Routes = [
     {
@@ -12,6 +13,11 @@ export const routes: Routes = [
     {
         path: 'home',
         component: Home,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'branch',
+        component: Branch,
         canActivate: [authGuard]
     },
     {
