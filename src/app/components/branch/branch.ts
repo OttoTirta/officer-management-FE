@@ -3,10 +3,11 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { debounceTime } from 'rxjs';
 import { BranchService } from '../../services/branchService/branch-service';
+import { CreateEditBranch } from './create-edit-branch/create-edit-branch';
 
 @Component({
   selector: 'app-branch',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, CreateEditBranch],
   templateUrl: './branch.html',
   styleUrl: './branch.scss'
 })
@@ -128,7 +129,6 @@ branchs: any[] = [];
 
   openBranchForm(actionType: string){
     this.isOpenBranchForm = true;
-    this.isCreateForm = actionType == 'Add';
   }
   closeBranchForm(){
     this.isOpenBranchForm = false;
@@ -143,8 +143,8 @@ branchs: any[] = [];
     this.isOpenDetail = false;
   }
 
-  deleteBranch(username: string): void {
-    this.branchService.deleteBranch(username)
+  deleteBranch(branchId: string): void {
+    this.branchService.deleteBranch(branchId)
     .subscribe({
       next: res => {
         this.getBranch();

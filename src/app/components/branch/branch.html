@@ -28,12 +28,12 @@
       </div>
       <div>
         <label for="nameFilter" class="block text-sm font-medium text-gray-300"
-          >Filter by Branch</label
+          >Filter by Code</label
         >
         <input
           type="text"
           id="nameFilter"
-          placeholder="Search by branch..."
+          placeholder="Search by code..."
           class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-sm shadow-sm placeholder-gray-400 text-gray-200 focus:outline-none focus:ring-sky-500 focus:border-sky-500"
           [formControl]="codeForm"
         />
@@ -109,7 +109,7 @@
               class="flex justify-end gap-2 px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
             >
               <button
-                (click)="deleteBranch(branch.username)"
+                (click)="deleteBranch(branch.BranchId)"
                 class="font-semibold text-gray-100 p-2 rounded-lg transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none cursor-pointer bg-red-500 hover:bg-red-700"
               >
                 Delete
@@ -156,3 +156,10 @@
     </div>
   </div>
 </div>
+
+@if (isOpenBranchForm) {
+  <app-create-edit-branch
+    [isOpen]="isOpenBranchForm"
+    (close)="closeBranchForm()"
+  />
+}
