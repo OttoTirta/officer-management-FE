@@ -3,6 +3,7 @@ import { Home } from './components/home/home';
 import { Login } from './components/login/login';
 import { authGuard, noAuthGuard } from './auth.guard';
 import { Branch } from './components/branch/branch';
+import { Position } from './components/position/position';
 
 export const routes: Routes = [
     {
@@ -18,6 +19,11 @@ export const routes: Routes = [
     {
         path: 'branch',
         component: Branch,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'position',
+        component: Position,
         canActivate: [authGuard]
     },
     {

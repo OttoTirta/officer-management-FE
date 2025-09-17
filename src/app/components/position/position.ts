@@ -2,27 +2,27 @@ import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { debounceTime } from 'rxjs';
-import { BranchService } from '../../services/branchService/branch-service';
+import { PositionService } from '../../services/positionService/position-service';
 
 @Component({
-  selector: 'app-branch',
+  selector: 'app-position',
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './branch.html',
-  styleUrl: './branch.scss'
+  templateUrl: './position.html',
+  styleUrl: './position.scss'
 })
-export class Branch {
-branchs: any[] = [];
+export class Position {
+positions: any[] = [];
   pageSizeList: number[] = [25, 50, 100];
   tableHeaderList: any[] =[
     {
-      value: 'Branch Name',
+      value: 'Position Name',
       isSortable: true,
-      sortColumn: 'BranchName'
+      sortColumn: 'PositionName'
     },
     {
-      value: 'Branch Code',
+      value: 'Position Code',
       isSortable: true,
-      sortColumn: 'BranchCode'
+      sortColumn: 'PositionCode'
     },
     {
       value: 'Actions',
@@ -31,7 +31,7 @@ branchs: any[] = [];
     },
   ];
 
-  sortingColumn: string = 'BranchName';
+  sortingColumn: string = 'PositionName';
   isSortByDesc: boolean = false;
 
   pageSizeForm: FormControl = new FormControl(25);
@@ -45,41 +45,41 @@ branchs: any[] = [];
 
   pageLinks: number[] = [1, 2, 4];
 
-  isOpenBranchForm: boolean = false;
+  isOpenPositionForm: boolean = false;
   isCreateForm: boolean = true;
   isOpenDetail: boolean = false;
-  selectedBranch!: any;
+  selectedPosition!: any;
 
-  constructor(private branchService: BranchService){
+  constructor(private positionService: PositionService){
     this.activateFilterListener();
     this.fetchData();
   }
 
   activateFilterListener(){
     this.pageSizeForm.valueChanges.subscribe(x => {
-      this.getBranch();
+      this.getPosition();
     });
     this.groupForm.valueChanges.subscribe(x => {
-      this.getBranch();
+      this.getPosition();
     });
     this.nameForm.valueChanges
     .pipe(
       debounceTime(500)
     )
     .subscribe(x => {
-      this.getBranch();
+      this.getPosition();
     });
     this.codeForm.valueChanges
     .pipe(
       debounceTime(500)
     )
     .subscribe(x => {
-      this.getBranch();
+      this.getPosition();
     });
   }
 
   fetchData(){
-    this.getBranch();
+    this.getPosition();
   }
 
   getPageSize(): number{
@@ -87,7 +87,7 @@ branchs: any[] = [];
   }
 
 
-  getBranch(){
+  getPosition(){
     var payload = {
       PageSize: this.pageSizeForm.value,
       PageIndex: this.pageIndex,
@@ -95,18 +95,18 @@ branchs: any[] = [];
       OrderBy: this.sortingColumn,
       Filters: [
         {
-          KeyName: 'BranchName',
+          KeyName: 'PositionName',
           Value: this.nameForm.value ?? ''
         },
         {
-          KeyName: 'BranchCode',
+          KeyName: 'PositionCode',
           Value: this.codeForm.value ?? ''
         },
       ]
     };
-    this.branchService.getBranchList(payload).subscribe({
+    this.positionService.getPositionList(payload).subscribe({
       next: (res: any) => {
-        this.branchs = res.Data.Data;
+        this.positions = res.Data.Data;
         this.totalPages = res.Data.PaginationInfo.TotalPages;
         this.totalData = res.Data.PaginationInfo.TotalData;
       }
@@ -117,37 +117,37 @@ branchs: any[] = [];
     if(isSortable){
       this.isSortByDesc = !this.isSortByDesc;
       this.sortingColumn = columnName;
-      this.getBranch();
+      this.getPosition();
     }
   }
 
   changePage(page: number){
     this.pageIndex = page;
-    this.getBranch();
+    this.getPosition();
   }
 
-  openBranchForm(actionType: string){
-    this.isOpenBranchForm = true;
+  openPositionForm(actionType: string){
+    this.isOpenPositionForm = true;
     this.isCreateForm = actionType == 'Add';
   }
-  closeBranchForm(){
-    this.isOpenBranchForm = false;
-    this.getBranch();
+  closePositionForm(){
+    this.isOpenPositionForm = false;
+    this.getPosition();
   }
   
-  openDetailForm(branch: any){
-    this.selectedBranch = branch;
+  openDetailForm(position: any){
+    this.selectedPosition = position;
     this.isOpenDetail = true;
   }
   closeDetailForm(){
     this.isOpenDetail = false;
   }
 
-  deleteBranch(username: string): void {
-    this.branchService.deleteBranch(username)
+  deletePosition(username: string): void {
+    this.positionService.deletePosition(username)
     .subscribe({
       next: res => {
-        this.getBranch();
+        this.getPosition();
       }
     });
   }

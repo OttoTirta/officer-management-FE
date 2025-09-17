@@ -1,13 +1,13 @@
 <div class="p-4 sm:p-6 lg:p-8 bg-gray-900 min-h-screen">
   <!-- Page Info -->
   <div class="flex justify-between mb-6">
-    <h1 class="text-2xl sm:text-3xl font-bold text-gray-100">Branch List</h1>
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-100">Position List</h1>
 
     <button
       class="font-semibold text-gray-100 p-2 rounded-lg transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none cursor-pointer bg-green-500 hover:bg-green-700"
-      (click)="openBranchForm('Add')"
+      (click)="openPositionForm('Add')"
     >
-      Add New Branch
+      Add New Position
     </button>
   </div>
 
@@ -28,12 +28,12 @@
       </div>
       <div>
         <label for="nameFilter" class="block text-sm font-medium text-gray-300"
-          >Filter by Branch</label
+          >Filter by Position</label
         >
         <input
           type="text"
           id="nameFilter"
-          placeholder="Search by branch..."
+          placeholder="Search by position..."
           class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-sm shadow-sm placeholder-gray-400 text-gray-200 focus:outline-none focus:ring-sky-500 focus:border-sky-500"
           [formControl]="codeForm"
         />
@@ -93,23 +93,23 @@
         </thead>
         <!-- Table Body -->
         <tbody class="bg-gray-800 divide-y divide-gray-700">
-          @for (branch of branchs; track $index) {
+          @for (position of positions; track $index) {
           <tr class="hover:bg-gray-700/50 transition-colors duration-200">
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-100">
-                {{ branch.BranchName }}
+                {{ position.PositionName }}
               </div>
             </td>
 
             <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-200">{{ branch.BranchCode }}</div>
+              <div class="text-sm text-gray-200">{{ position.PositionCode }}</div>
             </td>
 
             <td
               class="flex justify-end gap-2 px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
             >
               <button
-                (click)="deleteBranch(branch.username)"
+                (click)="deletePosition(position.username)"
                 class="font-semibold text-gray-100 p-2 rounded-lg transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none cursor-pointer bg-red-500 hover:bg-red-700"
               >
                 Delete
