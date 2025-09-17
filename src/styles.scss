@@ -1,3 +1,22 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+.custom-input {
+  width: 100%;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid #4b5563;
+  background-color: #374151;
+  color: #f9fafb;
+
+  &:focus {
+    outline: none;
+    background-color: #111827;
+    border-color: #0ea5e9;
+  }
+
+  &::placeholder {
+    color: #6b7280;
+  }
+}

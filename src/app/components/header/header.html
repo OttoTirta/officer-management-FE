@@ -1,0 +1,50 @@
+@if (isLoggedIn()) {
+  <header class="bg-gray-800 shadow-md w-full sticky top-0 z-10">
+    <div class="px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex items-center">
+          <div class="flex-shrink-0 cursor-pointer" (click)="redirectTo('home')">
+            <h1 class="text-xl font-bold text-gray-100">
+              Employee Management
+            </h1>
+          </div>
+        </div>
+
+        <nav class="hidden md:block">
+          <div class="ml-10 flex items-baseline space-x-4">
+            <a
+              (click)="redirectTo('home')"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+              >Employee</a
+            >
+            <a
+              (click)="redirectTo('branch')"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+              >Branch</a
+            >
+            <a
+              (click)="redirectTo('position')"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer"
+              >Position</a
+            >
+          </div>
+        </nav>
+
+        <div class="flex items-center space-x-4">
+          <span class="font-medium text-gray-300 hidden sm:block">
+            Welcome, {{ getUsername() }}
+          </span>
+          <button
+            (click)="onLogout()"
+            class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sky-500 hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-300 ease-in-out"
+          >
+            <img src="assets/svg/logout.svg" class="mr-2 h-4 w-4" />
+            Logout
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+}
