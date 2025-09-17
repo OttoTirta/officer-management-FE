@@ -45,70 +45,42 @@
             }
           </div>
           <div class="sm:col-span-2">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" id="username" name="username" [(ngModel)]="employeeData.username" #usernameInput="ngModel" required class="form-input">
-            @if (usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)) {
-              <div class="text-red-400 text-xs mt-1">
-                @if (usernameInput.errors?.['required']) {
-                  <span>Username is required.</span>
-                }
-              </div>
-            }
+            <label for="position" class="form-label">Position</label>
+            <select id="position" name="position" [(ngModel)]="employeeData.positionId" required class="form-input">
+              @for (position of positionList; track $index) {
+                <option [value]="position.PositionId">{{position.PositionName}}</option>
+              }
+            </select>
           </div>
           <div class="sm:col-span-2">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" [(ngModel)]="employeeData.email" #emailInput="ngModel" required email class="form-input">
-            @if (emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
-              <div class="text-red-400 text-xs mt-1">
-                @if (emailInput.errors?.['required']) {
-                  <span>Email is required.</span>
-                }
-                @else if (emailInput.errors?.['email']) {
-                  <span>Please enter a valid email format.</span>
-                }
-              </div>
-            }
+            <label for="branch" class="form-label">Branch</label>
+            <select id="branch" name="branch" required [(ngModel)]="employeeData.branchId" class="form-input">
+              @for (branch of branchList; track $index) {
+                <option [value]="branch.BranchId">{{branch.BranchName}}</option>
+              }
+            </select>
           </div>
-          <div class="sm:col-span-2">
-            <label for="birthDate" class="form-label">Birth Date</label>
-            <input type="date" onkeydown="return false"  [max]="today" id="birthDate" name="birthDate" [(ngModel)]="birthDateValue" #birthDateInput="ngModel" required class="form-input">
-            @if (birthDateInput.invalid && (birthDateInput.dirty || birthDateInput.touched)) {
+          <div>
+            <label for="contractStartDateValue" class="form-label">Contract Start Date</label>
+            <input type="date" onkeydown="return false"  id="contractStartDateValue" name="contractStartDateValue" [(ngModel)]="contractStartDateValue" #contractStartDateInput="ngModel" required class="form-input">
+            @if (contractStartDateInput.invalid && (contractStartDateInput.dirty || contractStartDateInput.touched)) {
               <div class="text-red-400 text-xs mt-1">
-                @if (birthDateInput.errors?.['required']) {
-                  <span>BirthDate is required.</span>
-                }
-                @else if (birthDateInput.errors?.['max']) {
-                  <span>Birthdate cannot be in the future.</span>
+                @if (contractStartDateInput.errors?.['required']) {
+                  <span>Contract Start Date is required.</span>
                 }
               </div>
             }
           </div>
           <div>
-              <label for="basicSalary" class="form-label">Basic Salary (IDR)</label>
-              <input type="number" id="basicSalary" name="basicSalary" [(ngModel)]="employeeData.basicSalary" #basicSalaryInput="ngModel" required class="form-input">
-            @if (basicSalaryInput.invalid && (basicSalaryInput.dirty || basicSalaryInput.touched)) {
+            <label for="contractEndDateValueValue" class="form-label">Contract End Date</label>
+            <input type="date" onkeydown="return false"  id="contractEndDateValueValue" name="contractEndDateValueValue" [(ngModel)]="contractEndDateValue" #contractEndDateInput="ngModel" required class="form-input">
+            @if (contractEndDateInput.invalid && (contractEndDateInput.dirty || contractEndDateInput.touched)) {
               <div class="text-red-400 text-xs mt-1">
-                @if (basicSalaryInput.errors?.['required']) {
-                  <span>Basic Salary is required.</span>
+                @if (contractEndDateInput.errors?.['required']) {
+                  <span>Contract End Date is required.</span>
                 }
               </div>
             }
-          </div>
-          <div>
-            <label for="group" class="form-label">Group</label>
-            <select id="group" name="group" required [(ngModel)]="employeeData.group" class="form-input">
-              @for (group of availableGroups; track $index) {
-                <option [value]="group">{{group}}</option>
-              }
-            </select>
-          </div>
-          <div class="sm:col-span-2">
-            <label for="status" class="form-label">Status</label>
-            <select id="status" name="status" [(ngModel)]="employeeData.status" required class="form-input">
-              @for (status of statusList; track $index) {
-                <option [value]="status">{{status}}</option>
-              }
-            </select>
           </div>
         </form>
       </div>

@@ -61,7 +61,7 @@ export class Home {
   isOpenEmployeeForm: boolean = false;
   isCreateForm: boolean = true;
   isOpenDetail: boolean = false;
-  selectedEmployee!: EmployeeData;
+  selectedEmployee!: any;
 
   constructor(private employeeService: EmployeeService){
     this.activateFilterListener();
@@ -164,13 +164,20 @@ export class Home {
     this.isOpenDetail = false;
   }
 
-  editEmployee(employee: EmployeeData): void {
-    this.selectedEmployee = employee;
+  editEmployee(employee: any): void {
+    this.selectedEmployee = {
+      firstName: employee.FirstName,
+      lastName: employee.LastName,
+      branchId: employee.BranchId,
+      positionId: employee.PositionId,
+      contractStartDate: new Date(employee.ContractStartDate),
+      contractEndDate: new Date(employee.ContractEndDate)
+    };
     this.openEmployeeForm('Edit');
   }
 
-  deleteEmployee(username: string): void {
-    this.employeeService.deleteEmployeeByUsername(username)
+  deleteEmployee(id: string): void {
+    this.employeeService.deleteEmployeeByUsername(id)
     .subscribe({
       next: res => {
         this.getEmployee();

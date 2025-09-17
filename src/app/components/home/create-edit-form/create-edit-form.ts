@@ -1,28 +1,28 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { EmployeeData } from '../../../models/employee.model';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../../../services/employeeService/employee-service';
+import { BranchService } from '../../../services/branchService/branch-service';
+import { PositionService } from '../../../services/positionService/position-service';
 
 @Component({
   selector: 'app-create-edit-form',
   imports: [CommonModule, FormsModule],
   templateUrl: './create-edit-form.html',
-  styleUrl: './create-edit-form.scss'
+  styleUrl: './create-edit-form.scss',
+  providers: [DatePipe]
 })
 export class CreateEditForm implements OnChanges {
   @Input() isOpen: boolean = false;
   @Input() isCreate: boolean = true;
-  @Input() availableGroups: string[] = [];
-  @Input() employeeData!: EmployeeData;
+  @Input() employeeData!: any;
   @Output() close = new EventEmitter<void>();
 
+  branchList: any[] = [];
+  positionList: any[] = [];
+
   errorMessage: string | undefined;
-  statusList: string[] = [
-    'Active',
-    'On Leave',
-    'Terminated'
-  ];
   today: string;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -31,35 +31,80 @@ export class CreateEditForm implements OnChanges {
     } 
   }
 
-  constructor(private employeeService: EmployeeService){
+  constructor(
+    private employeeService: EmployeeService,
+    private branchService: BranchService,
+    private positionService: PositionService,
+    private datePipe: DatePipe
+  ){
     this.today = new Date().toISOString().split('T')[0];
     this.resetForm();
+    this.getBranch();
+    this.getPosition();
   }
-
+  getBranch(){
+    var payload = {
+      PageSize: 100,
+      PageIndex: 1,
+      SortOrder: 'desc',
+      OrderBy: 'BranchName',
+      Filters: []
+    };
+    this.branchService.getBranchList(payload).subscribe({
+      next: (res: any) => {
+        this.branchList = res.Data.Data;
+      }
+    });
+  }
+  getPosition(){
+    var payload = {
+      PageSize: 100,
+      PageIndex: 1,
+      SortOrder: 'desc',
+      OrderBy: 'PositionName',
+      Filters: []
+    };
+    this.positionService.getPositionList(payload).subscribe({
+      next: (res: any) => {
+        this.positionList = res.Data.Data;
+      }
+    });
+  }
   private resetForm(): void {
     this.employeeData = {
-      username: '',
       firstName: '',
       lastName: '',
-      email: '',
-      birthDate: new Date(),
-      basicSalary: 0,
-      status: 'Active',
-      group: this.availableGroups[0] || '',
-      description: new Date(),
+      branchId: '',
+      positionId: '',
+      contractStartDate: new Date(),
+      contractEndDate: new Date()
     };
   }
-  get birthDateValue(): string {
-    if (this.employeeData.birthDate) {
-      const date = new Date(this.employeeData.birthDate);
+  
+  get contractStartDateValue(): string {
+    if (this.employeeData.contractStartDate) {
+      const date = new Date(this.employeeData.contractStartDate);
       date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
       return date.toISOString().slice(0, 10);
     }
     return '';
   }
 
-  set birthDateValue(value: string) {
-    this.employeeData.birthDate = new Date(value);
+  set contractStartDateValue(value: string) {
+    this.employeeData.contractStartDate = new Date(value);
+  }
+  
+  get contractEndDateValue(): string {
+    if (this.employeeData.contractEndDate) {
+      const date = new Date(this.employeeData.contractEndDate);
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+      return date.toISOString().slice(0, 10);
+    }
+    return '';
+  }
+
+  set contractEndDateValue(value: string) {
+    this.employeeData.contractEndDate = new Date(value);
   }
 
   getTodayDate(){
@@ -67,16 +112,19 @@ export class CreateEditForm implements OnChanges {
   }
   
   insertNewEmployee(){
-    // this.employeeService.insertNewEmployee(this.employeeData).subscribe({
-    //   next: res => {
-    //     if (res.responseCode == 200){
-    //       this.closeForm();
-    //     }
-    //     else if(res.responseCode == 400){
-    //       this.errorMessage = res.message;
-    //     }
-    //   }
-    // });
+    var payload = {
+      FirstName: this.employeeData.firstName,
+      LastName: this.employeeData.lastName,
+      BranchId: this.employeeData.branchId,
+      PositionId: this.employeeData.positionId,
+      ContractStartDate: this.datePipe.transform(this.employeeData.contractStartDate, 'yyyy-MM-dd'),
+      ContractEndDate: this.datePipe.transform(this.employeeData.contractEndDate, 'yyyy-MM-dd')
+    }
+    this.employeeService.insertNewEmployee(payload).subscribe({
+      next: res => {
+        this.closeForm();
+      }
+    })
   }
 
   editEmployee(){

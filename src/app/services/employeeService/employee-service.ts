@@ -23,8 +23,9 @@ export class EmployeeService {
     return this.http.get<any>(deleteUrl);
   }
 
-  insertNewEmployee(data: EmployeeData) {
-    
+  insertNewEmployee(data: any) {
+    var createUrl = this.employeeModuleUrl + 'Create';
+    return this.http.post<any>(createUrl, data);
   }
 
 }
